@@ -9,6 +9,7 @@
     "react-native": "^0.3.4"
   },
   "devDependencies": {
-    "reflux": "^0.2.7"
+    "reflux": "^0.2.7",
+    "underscore": "^1.8.3"
   }
 }
