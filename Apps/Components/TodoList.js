@@ -16,17 +16,23 @@ module.exports = React.createClass({
   getInitialState: function() {
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     return {
-      todoDataSource: ds.cloneWithRows(TodoStore.getAll()),
+      todoDataSource: ds,
     };
+  },
+
+  componentDidMount : function() {
+    this.handlerTodoUpdate()
   },
 
   handlerTodoUpdate: function(err) {
     if (err) {
         return
     }
-    this.setState({
-      todoDataSource: this.state.todoDataSource.cloneWithRows(TodoStore.getAll()),
-    });
+    TodoStore.getAll().then((rows) => {
+      this.setState({
+        todoDataSource: this.state.todoDataSource.cloneWithRows(rows),
+      });
+    })
   },
 
   render: function() {
