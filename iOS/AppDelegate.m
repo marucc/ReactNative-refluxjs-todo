@@ -8,6 +8,9 @@
  */
 
 #import "AppDelegate.h"
+#import "CouchbaseLite/CouchbaseLite.h"
+#import "CouchbaseLiteListener/CBLListener.h"
+#import "CBLRegisterJSViewCompiler.h"
 
 #import "RCTRootView.h"
 
@@ -36,6 +39,8 @@
   // and uncomment the next following line
   // jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 
+  [self launchCouchbaseLite];
+  
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"TodoProject"
                                                    launchOptions:launchOptions];
@@ -46,6 +51,14 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   return YES;
+}
+
+- (void)launchCouchbaseLite
+{
+  NSLog(@"Launching Couchbase Lite...");
+  CBLManager* dbmgr = [CBLManager sharedInstance];
+  CBLRegisterJSViewCompiler();
+  NSLog(@"Couchbase Lite url = %@", dbmgr.internalURL);
 }
 
 @end
