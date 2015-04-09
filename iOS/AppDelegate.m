@@ -8,6 +8,9 @@
  */
 
 #import "AppDelegate.h"
+#import "CouchbaseLite/CouchbaseLite.h"
+#import "CouchbaseLiteListener/CBLListener.h"
+#import "CBLRegisterJSViewCompiler.h"
 
 #import "RCTRootView.h"
 
@@ -26,7 +29,7 @@
   //
   // To run on device, change `localhost` to the IP address of your computer, and make sure your computer and
   // iOS device are on the same Wi-Fi network.
-  jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle"];
+  // jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle"];
 
   // OPTION 2
   // Load from pre-bundled file on disk. To re-generate the static bundle, run
@@ -34,8 +37,10 @@
   // $ curl 'http://localhost:8081/index.ios.bundle?dev=false&minify=true' -o iOS/main.jsbundle
   //
   // and uncomment the next following line
-  // jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+  jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 
+  [self launchCouchbaseLite];
+  
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"TodoProject"
                                                    launchOptions:launchOptions];
@@ -46,6 +51,14 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   return YES;
+}
+
+- (void)launchCouchbaseLite
+{
+  NSLog(@"Launching Couchbase Lite...");
+  CBLManager* dbmgr = [CBLManager sharedInstance];
+  CBLRegisterJSViewCompiler();
+  NSLog(@"Couchbase Lite url = %@", dbmgr.internalURL);
 }
 
 @end
